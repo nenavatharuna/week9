@@ -1,23 +1,27 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('Build'){
-            steps{
+
+    stages {
+
+        stage('Build') {
+            steps {
                 echo "Build Docker Image"
-                bat "docker build -t mypythonflaskapp ."
+                bat "docker build -t aruna/kuborep:latest ."
             }
         }
-        stage('Run'){
-            steps{
-                echo 'Run application in Docker Container'
-                bat "docker rm -f mycontainer || exit 0"
-                //forcibly remoces the Dcoker container if it is already running
-                //If the container doesn't exist, this command will fail, so we use '|| exit 0' to ignore the error,and exit with success status.
-                //If exit 0 is not used, the pipeline will fail and stop executing the next steps.
-                bat "docker run -d -p 5000:5000 mypythonflaskapp"
-                //The -d flag runs the container in detached mode, allowing it to run in the background while the pipeline continues executing.
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+
+                    bat "docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%"
+                    bat "docker push aruna/kuborep:latest"
+                }
             }
-            
         }
     }
 }
