@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Build Docker Image"
-                bat "docker build -t aruna/kuborep:latest ."
+                bat "docker build -t nenavatharuna/kuborep:latest ."
             }
         }
 
@@ -19,7 +19,7 @@ pipeline {
                 )]) {
 
                     bat "docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%"
-                    bat "docker push aruna/kuborep:latest"
+                    bat "docker push nenavatharuna/kuborep:latest"
                 }
             }
         }
