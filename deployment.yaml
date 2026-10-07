@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: kubedemoapp
-          image: nenavatharuna/sample:kubeimage1 # use your Docker Hub image
+          image: nenavatharuna/kuborep:latest # use your Docker Hub image
           ports:
             - containerPort: 5000
